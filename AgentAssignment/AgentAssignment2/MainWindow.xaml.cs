@@ -24,30 +24,5 @@ namespace AgentAssignment2
         {
             InitializeComponent();
         }
-
-        private void MenuItemPrevious_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void MenuItemNext_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void MenuItemAddNew_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void MenuItemDelete_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Exit_OnClick(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
     }
 }

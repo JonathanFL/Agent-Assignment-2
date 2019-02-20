@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AgentAssignment2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="470" Width="800" WindowStyle="None" WindowStartupLocation="CenterScreen">
+        Title="Agent Assignments" Height="470" Width="800" WindowStyle="None" WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <local:MainWindowViewModel  />
+    </Window.DataContext>
     <Grid Name="AgentGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="37*" />
@@ -16,13 +19,13 @@
         <Grid Grid.Row="0" Margin="0,0,-0.4,1.8">
             <Menu Margin="0,5,-0.4,10">
                 <MenuItem Header="_File">
-                    <MenuItem Name="Exit" Header="Exit" Click="Exit_OnClick"/>
+                    <MenuItem Name="Exit" Header="Exit"/>
                 </MenuItem>
                 <MenuItem Header="Agent">
-                    <MenuItem Header="Previous" Name="MenuItemPrevious" Click="MenuItemPrevious_OnClick"></MenuItem>
-                    <MenuItem Header="Next" Name="MenuItemNext" Click="MenuItemNext_OnClick"></MenuItem>
-                    <MenuItem Header="Add new" Name="MenuItemAddNew" Click="MenuItemAddNew_OnClick"></MenuItem>
-                    <MenuItem Header="Delete" Name="MenuItemDelete" Click="MenuItemDelete_OnClick"></MenuItem>
+                    <MenuItem Command="{Binding Path=PreviousCommand}" Header="Previous" Name="MenuItemPrevious"></MenuItem>
+                    <MenuItem Command="{Binding Path=NextCommand}" Header="Next" Name="MenuItemNext"></MenuItem>
+                    <MenuItem Command="{Binding Path=NewCommand}" Header="Add new" Name="MenuItemAddNew"></MenuItem>
+                    <MenuItem Command="{Binding Path=DeleteCommand}" Header="Delete" Name="MenuItemDelete"></MenuItem>
                 </MenuItem>
             </Menu>
         </Grid>
@@ -30,10 +33,10 @@
         <Grid Grid.Row="1">
             <ToolBarTray DockPanel.Dock="Top">
                 <ToolBar FontSize="18" Margin="0,0,-784,0.2">
-                    <Button Margin="0,0,0,0" FontWeight="Black" Content="&lt;" Name="Previous"/>
-                    <Button FontWeight="Black" Content="&gt;" Name="Next"/>
-                    <Button FontWeight="Black" Content="+" Name="AddNew"/>
-                    <Button FontWeight="Black" Content="-" Name="Delete"/>
+                    <Button Command="{Binding Path=PreviousCommand}" Margin="0,0,0,0" FontWeight="Black" Content="&lt;" Name="Previous"/>
+                    <Button Command="{Binding Path=NextCommand}" FontWeight="Black" Content="&gt;" Name="Next"/>
+                    <Button Command="{Binding Path=NewCommand}" FontWeight="Black" Content="+" Name="AddNew"/>
+                    <Button Command="{Binding Path=DeleteCommand}" FontWeight="Black" Content="-" Name="Delete"/>
                 </ToolBar>
             </ToolBarTray>
         </Grid>
@@ -55,34 +58,40 @@
             <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,280.6,0">
                 <StackPanel Orientation="Horizontal">
                     <Label Margin="0,20,0,0" Content="Id"></Label>
-                    <TextBox Text="{Binding Path=ID}" Name="IdTxB" Margin="80,0,0,0" Width="100" Height="35"></TextBox>
+                    <TextBox Text="{Binding CurrentAgent.ID}" 
+                             Name="IdTxB" 
+                             Margin="80,0,0,0" 
+                             Width="100" 
+                             Height="35"></TextBox>
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="0"  Margin="0,63,280.6,78.4" Grid.Row="0" Grid.RowSpan="3">
                 <StackPanel Orientation="Horizontal" Margin="0,0,-275.2,0">
                     <Label Margin="0,28,0,0" Content="CodeName"></Label>
-                    <TextBox Text="{Binding Path=CodeName}" Name="CodeNameTxB" Margin="33,29,0,30.4" Width="349" Height="35"></TextBox>
+                    <TextBox Text="{Binding CurrentAgent.CodeName}" Name="CodeNameTxB" Margin="33,29,0,30.4" Width="349" Height="35"></TextBox>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="0" Margin="0,0.8,280.6,0.4">
                 <StackPanel Orientation="Horizontal" Margin="0,0,-302.2,0.8">
                     <Label Margin="0,28,0,0" Content="Specialty"></Label>
-                    <TextBox Text="{Binding Path=Specialty}" Name="SpecialtyTxB" Margin="45,24,0,24.2" Width="351" Height="35"></TextBox>
+                    <TextBox Text="{Binding CurrentAgent.Specialty}" Name="SpecialtyTxB" Margin="45,24,0,24.2" Width="351" Height="35"></TextBox>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="3" Grid.Column="0" Margin="0,0.8,280.6,0.4">
                 <StackPanel Orientation="Horizontal" Margin="0,0,-279.2,-49.2">
                     <Label Margin="0,10,34,0" Content="Assignment"></Label>
                     <Border BorderThickness="1" BorderBrush="Black">
-                        <TextBlock Text="{Binding Path=Assignment}" Name="AssignmentTxB" Width="344" Margin="0,0,0,0"/>
+                        <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding CurrentAgent.Assignment}" Name="AssignmentTxB" Width="344" Margin="0,0,0,0"/>
                     </Border>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="0" Grid.RowSpan="4" Grid.Column="1">
-                <ListBox ItemsSource="{Binding}" 
+                <ListBox Name="ListBoxAgents" 
+                         ItemsSource="{Binding Path=Agents}"
+                         SelectedItem="{Binding Path=CurrentAgent}"
+                         SelectedIndex="{Binding Path=CurrentIndex}"
                          IsSynchronizedWithCurrentItem="True"
-                         DisplayMemberPath="CodeName"
-                         Name="ListBoxAgents" 
+                         DisplayMemberPath="CodeName" 
                          Margin="9"/>
             </Grid>
 
