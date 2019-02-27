@@ -4,18 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
 using System.Xml.Serialization;
+using AgentAssignment;
 
-namespace AgentAssignment2
+namespace AgentAssignment3
 {
     class MainWindowViewModel : BindableBase
     {
         private ObservableCollection<Agent> _agents;
         private string _filename = "";
+        DispatcherTimer timer = new DispatcherTimer();
 
         public MainWindowViewModel()
         {
@@ -27,7 +32,18 @@ namespace AgentAssignment2
                 //#endif
             };
             CurrentAgent = null;
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += new EventHandler(Timer_Tick);
+            timer.Start();
         }
+
+        void Timer_Tick(object sender, EventArgs e)
+        {
+            clock.Update();
+        }
+
+        Clock clock = new Clock();
+        public Clock Clock { get => clock; set => clock = value; }
 
         public ObservableCollection<Agent> Agents
         {
@@ -48,6 +64,19 @@ namespace AgentAssignment2
         {
             get => _currentIndex;
             set => SetProperty(ref _currentIndex, value);
+        }
+
+        private ICommand exitButtonCommand;
+
+        public ICommand ExitButtonCommand
+        {
+            get
+            {
+                return exitButtonCommand ?? (exitButtonCommand = new DelegateCommand(() =>
+                {
+                    if (Application.Current.MainWindow != null) Application.Current.MainWindow.Close();
+                }));
+            }
         }
 
         ICommand previousCommand;
@@ -211,6 +240,19 @@ namespace AgentAssignment2
                 //foreach (var agent in tempAgents)
                 //    Add(agent);
             }
+        }
+
+        private ICommand _changeColorCommand;
+
+        public ICommand ChangeColorCommand =>
+            _changeColorCommand ?? (
+                _changeColorCommand = new DelegateCommand<string>((ColorCommandExecute)));
+
+        private static void ColorCommandExecute(string color)
+        {
+            Debug.WriteLine("TEST");
+            SolidColorBrush _color = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+            Application.Current.Resources["DynamicBg"] = _color;
         }
     }
 }

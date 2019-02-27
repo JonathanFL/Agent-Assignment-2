@@ -1,0 +1,190 @@
+﻿<Window x:Class="AgentAssignment4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AgentAssignment4"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="1056">
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <SolidColorBrush x:Key="ForegroundBrush" Color="Blue"/>
+
+        <CollectionViewSource x:Key="SortedItems" Source="{Binding Path=Agents}"
+                              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="SomePropertyOnYourItems"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <!--Label style-->
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+    </Window.Resources>
+    <DockPanel Name="MyDockPanel">
+        <Menu DockPanel.Dock="Top" Name="mainMenu">
+            <MenuItem Header="_File" >
+                <MenuItem Header="_New" Command="{Binding NewFileCommand}"/>
+                <MenuItem Header="_Open" Command="{Binding OpenFileCommand}" CommandParameter="{Binding ElementName=tbxFileName, Path=Text}" />
+                <MenuItem Header="_Save" Command="{Binding SaveCommand}" />
+                <MenuItem Header="Save _As" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=tbxFileName, Path=Text}" />
+                <MenuItem Header="E_xit" Command="{Binding CloseAppCommand}"/>
+            </MenuItem>
+            <MenuItem Header="_Agents">
+                <MenuItem Header="_Previous" Command="{Binding PreviusCommand}"/>
+                <MenuItem Header="_Next" Command="{Binding NextCommand}"/>
+                <MenuItem Header="_Add new" Command="{Binding Path=AddNewAgentCommand}"/>
+                <MenuItem Header="_Delete" Command="{Binding Path=DeleteAgentCommand}"/>
+            </MenuItem>
+            <MenuItem Header="_Color">
+                <MenuItem Header="_Default" Command="{Binding ColorCommand}" CommandParameter="Default" />
+                <MenuItem Header="_Bisque" Command="{Binding ColorCommand}" CommandParameter="Bisque" />
+                <MenuItem Header="Light_Green" Command="{Binding ColorCommand}" CommandParameter="LightGreen"/>
+                <MenuItem Header="_LightBlue" Command="{Binding ColorCommand}" CommandParameter="LightBlue"/>
+                <MenuItem Header="Ghost_White" Command="{Binding ColorCommand}" CommandParameter="GhostWhite"/>
+            </MenuItem>
+        </Menu>
+        <ToolBar DockPanel.Dock="Top" Height="auto"
+                 FontSize="20" FontWeight="ExtraBold"
+                 Background="AliceBlue">
+
+            <Button ToolTip="Move to previous agent"
+                    Command="{Binding Path=PreviusCommand}"
+                    Style="{StaticResource ResourceKey=BottonToolbarStyle}"
+                    >
+                <Image Source="Images/leftArrow.png" />
+            </Button>
+            <Button ToolTip="Move to next agent"
+                    Command="{Binding Path=NextCommand}"
+                    Style="{StaticResource ResourceKey=BottonToolbarStyle}"
+                    >
+                <Image Source="images/rightArrow.png" />
+            </Button>
+            <Button ToolTip="Add a new agent"
+                    Command="{Binding Path=AddNewAgentCommand}"
+                    Style="{StaticResource ResourceKey=BottonToolbarStyle}"
+                    >
+                <Image Source="images/plusSign.png" />
+            </Button>
+            <Button ToolTip="Delete selected agent"
+                    Command="{Binding Path=DeleteAgentCommand}"
+                    Style="{StaticResource ResourceKey=BottonToolbarStyle}"
+                    >
+                <Image Source="images/minusSign.png" />
+            </Button>
+            <Label Content="File _Name: " 
+                   Target="{Binding ElementName=tbxFileName}"
+                   FontSize="14"
+                   FontWeight="Medium"
+                   VerticalAlignment="Center"
+                   />
+            <TextBox Name="tbxFileName"
+                     FontSize="14"
+                     FontWeight="Medium"
+                     VerticalAlignment="Center"
+                     MinWidth="150"
+                     />
+            <Separator Width="auto"
+                       Height="30"
+                       Margin="206,0,0,0"/>
+            <Label Content="Sort Order: "
+                   FontSize="14"/>
+            <ComboBox MaxWidth="200" Width="100"
+                      MaxHeight="20.5"
+                      Name="SortComboBox"
+                      ItemsSource="{Binding Path=SortCollection}"
+                      SelectedIndex="0"
+                      SelectedItem="{Binding SelectedSortOrder}"
+                      Style="{StaticResource ComboBoxStyle}"/>
+        </ToolBar>
+        <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Background="AliceBlue">
+            <StatusBarItem Content="Agents Count:" />
+            <StatusBarItem Name="sbiAgentsCount" Width="40"
+                           Content="{Binding Path=Agents.Count}" />
+            <StatusBarItem Name="sbiDateTime" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" Name="spClock">
+                    <TextBlock Margin="4,0" Name="tblkDate" Text="{Binding Path=Clock.Date}" />
+                    <TextBlock Margin="4,0" Name="tblkTime" Text="{Binding Path=Clock.Time}" />
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <Grid.Resources>
+                <ObjectDataProvider x:Key="dateinfo" ObjectType="{x:Type system:DateTime}"/>
+                <local:IsAgent007 x:Key="IdToColorConverter" />
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="68*"/>
+                <RowDefinition Height="41*"/>
+                <RowDefinition Height="234*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Height="28" Margin="0,8,0,0" >Id</Label>
+            <Label Height="28" Margin="0,37,0,0"  >CodeName</Label>
+            <Label Height="28" Margin="0,4,0,0" Grid.Row="1"  >Speciality</Label>
+            <Label Height="28" Margin="0,39,0,0" Grid.Row="1" Grid.RowSpan="2" >Assignment</Label>
+            <TextBox Margin="38.8,10,0,0" 
+                     Name="tbxId" 
+                     VerticalAlignment="Top" 
+                     HorizontalAlignment="Left" 
+                     MinWidth="58"
+                     Text="{Binding Path=CurrentAgent.ID}" 
+                     Grid.Column="1"
+                 />
+            <TextBox Margin="38.8,39,14,0" 
+                     Name="tbxCodeName" 
+                     Text="{Binding Path=CurrentAgent.CodeName}" 
+                     Grid.Column="1"
+                     Style="{StaticResource TextBoxStyle}"
+                     />
+
+            <ComboBox Name="SpecialtyComboBox"
+                      Margin="38.8,5,17,8"
+                      Grid.Column="1"
+                      ItemsSource="{Binding Path=Specialties}"
+                      SelectedItem="{Binding CurrentAgent.Specialty}"
+                      Grid.Row="1"
+                      Style="{StaticResource ComboBoxStyle}"
+                      />
+            <!--<TextBox Margin="39.2,72,14,0" 
+                     Name="tbxSpeciality"
+                     Text="{Binding Path=CurrentAgent.Specialty}" 
+                     Grid.Column="1"
+                     Style="{StaticResource TextBoxStyle}"
+                     />-->
+            <TextBox Margin="38.8,41,14,8.2" 
+                     Name="tbxAssignment"
+                     Text="{Binding Path=CurrentAgent.Assignment}" 
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     Grid.Column="1" 
+                     VerticalAlignment="Stretch"
+                     VerticalScrollBarVisibility="Auto"
+                     Style="{StaticResource TextBoxStyle}" Grid.Row="1" Grid.RowSpan="2"
+                     />
+            <ListBox ItemsSource="{Binding Path=Agents}" 
+                     SelectedItem="{Binding Path=CurrentAgent}"
+                     SelectedIndex="{Binding Path=CurrentIndex}"
+                     IsSynchronizedWithCurrentItem="True"
+                     Name="lbxAgents"
+                     Grid.Column="2" 
+                     Margin="9,9,8.6,9.2"
+                     ItemTemplate="{StaticResource agentTemplate}" Grid.RowSpan="3"
+                     >
+            </ListBox>
+        </Grid>
+    </DockPanel>
+</Window>

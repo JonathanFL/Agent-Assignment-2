@@ -3,21 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AgentAssignment2"
+        xmlns:local="clr-namespace:AgentAssignment3"
         mc:Ignorable="d"
-        Title="Agent Assignments" Height="470" Width="800" WindowStyle="None" WindowStartupLocation="CenterScreen">
+        Title="Agent Assignments" Height="560" Width="800" WindowStyle="None" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
-    <Grid Name="AgentGrid">
+    <Window.Resources>
+        <Image x:Key="LeftArrow">
+            <Image.Source>../leftArrow.png</Image.Source>
+        </Image>
+        <Image x:Key="RightArrow">
+            <Image.Source>../rightArrow.png</Image.Source>
+        </Image>
+        <Image x:Key="PlusSign">
+            <Image.Source>../plusSign.png</Image.Source>
+        </Image>
+        <Image x:Key="MinusSign">
+            <Image.Source>../minusSign.png</Image.Source>
+        </Image>
+    </Window.Resources>
+    <Grid Name="AgentGrid" Background="{DynamicResource DynamicBg}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="37*" />
-            <RowDefinition Height="32*" />
-            <RowDefinition Height="374*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="31*" />
+            <RowDefinition Height="482*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="0,0,-0.4,1.8">
-            <Menu Margin="0,5,-0.4,10">
+        <Grid Grid.Row="0" Margin="0,0,-0.4,2">
+            <Menu Margin="0,7,0,8">
                 <MenuItem Header="_File">
                     <MenuItem Command="{Binding Path=NewFileCommand}" Name="New" Header="_New"/>
                     <MenuItem Command="{Binding Path=OpenFileCommand}" CommandParameter="{Binding ElementName=textBoxFileName, Path=Text}" Name="Open" Header="_Open"/>
@@ -31,23 +45,30 @@
                     <MenuItem Command="{Binding Path=NewCommand}" Header="Add new" Name="MenuItemAddNew"></MenuItem>
                     <MenuItem Command="{Binding Path=DeleteCommand}" Header="Delete" Name="MenuItemDelete"></MenuItem>
                 </MenuItem>
+                <MenuItem Header="Colors">
+                    <MenuItem Command="{Binding Path=ChangeColorCommand}" CommandParameter="Black" Header="Black" Name="Black" ></MenuItem>
+                    <MenuItem Command="{Binding Path=ChangeColorCommand}" CommandParameter="Red" Header="Red" Name="Red" ></MenuItem>
+                    <MenuItem Command="{Binding Path=ChangeColorCommand}" CommandParameter="Green" Header="Green" Name="Green" ></MenuItem>
+                    <MenuItem Command="{Binding Path=ChangeColorCommand}" CommandParameter="Orange" Header="Orange" Name="Orange" ></MenuItem>
+                </MenuItem>
+                <MenuItem Header="X" Margin="620,5,0,0" Command="{Binding Path=ExitButtonCommand}"/>
             </Menu>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="0,2,-0.4,476.6" Grid.RowSpan="2">
             <ToolBarTray DockPanel.Dock="Top">
-                <ToolBar FontSize="18" Margin="0,0,-784,0.2">
-                    <Button Command="{Binding Path=PreviousCommand}" Margin="0,0,0,0" FontWeight="Black" Content="&lt;" Name="Previous"/>
-                    <Button Command="{Binding Path=NextCommand}" FontWeight="Black" Content="&gt;" Name="Next"/>
-                    <Button Command="{Binding Path=NewCommand}" FontWeight="Black" Content="+" Name="AddNew"/>
-                    <Button Command="{Binding Path=DeleteCommand}" FontWeight="Black" Content="-" Name="Delete"/>
+                <ToolBar FontSize="18" Margin="0,-8,-784,8.4">
+                    <Button Command="{Binding Path=PreviousCommand}" Margin="0,0,0,0" Content="{StaticResource LeftArrow}" Width="32" Name="Previous"/>
+                    <Button Command="{Binding Path=NextCommand}" Content="{StaticResource RightArrow}" Width="32" Name="Next"/>
+                    <Button Command="{Binding Path=NewCommand}" Content="{StaticResource PlusSign}" Width="32" Name="AddNew"/>
+                    <Button Command="{Binding Path=DeleteCommand}" Content="{StaticResource MinusSign}" Width="32" Name="Delete"/>
                     <TextBlock Text="File Name:" Margin="10,4,0,0"></TextBlock>
                     <TextBox Name="FileTextBox" FontSize="14" Margin="10,3,0,5.4" Width="152" Height="25"></TextBox>
                 </ToolBar>
             </ToolBarTray>
         </Grid>
 
-        <Grid Grid.Row="2" Margin="0,8.2,-0.4,0.2" >
+        <Grid Grid.Row="2" Margin="0,7.8,-0.4,-29.4" >
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="462*" />
@@ -59,9 +80,11 @@
                 <RowDefinition Height="Auto" MinHeight="81.6" />
                 <RowDefinition Height="Auto" MinHeight="77.6" />
                 <RowDefinition Height="Auto" MinHeight="79.2" />
+                <RowDefinition Height="36*"/>
+                <RowDefinition Height="13*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,280.6,0">
+            <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,280.6,83" Grid.RowSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="68*"/>
                     <ColumnDefinition Width="103*"/>
@@ -75,7 +98,7 @@
                              Height="35"></TextBox>
                 </StackPanel>
             </Grid>
-            <Grid Grid.Column="0"  Margin="0,63,280.6,78.4" Grid.Row="0" Grid.RowSpan="3">
+            <Grid Grid.Column="0"  Margin="0,63,280.4,76.4" Grid.Row="0" Grid.RowSpan="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="79*"/>
                     <ColumnDefinition Width="12*"/>
@@ -85,21 +108,21 @@
                     <TextBox Text="{Binding CurrentAgent.CodeName}" Name="CodeNameTxB" Margin="33,29,0,30.4" Width="349" Height="35"></TextBox>
                 </StackPanel>
             </Grid>
-            <Grid Grid.Row="2" Grid.Column="0" Margin="0,0.8,280.6,0.4">
+            <Grid Grid.Row="2" Grid.Column="0" Margin="0,2,280.4,77.4" Grid.RowSpan="2">
                 <StackPanel Orientation="Horizontal" Margin="0,0,-302.2,0.8">
                     <Label Margin="0,28,0,0" Content="Specialty"></Label>
                     <TextBox Text="{Binding CurrentAgent.Specialty}" Name="SpecialtyTxB" Margin="45,24,0,24.2" Width="351" Height="35"></TextBox>
                 </StackPanel>
             </Grid>
-            <Grid Grid.Row="3" Grid.Column="0" Margin="0,0.8,280.6,0.4">
+            <Grid Grid.Row="3" Grid.Column="0" Margin="0,2.6,280.4,55.4" Grid.RowSpan="2">
                 <StackPanel Orientation="Horizontal" Margin="0,0,-279.2,-49.2">
                     <Label Margin="0,10,34,0" Content="Assignment"></Label>
-                    <Border BorderThickness="1" BorderBrush="Black">
-                        <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding CurrentAgent.Assignment}" Name="AssignmentTxB" Width="344" Margin="0,0,0,0"/>
+                    <Border MaxHeight="165" BorderThickness="1" BorderBrush="Black" Margin="0,0,0,44.4">
+                        <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding CurrentAgent.Assignment}" Name="AssignmentTxB" Width="344" Margin="0,0,0,0" Height="156" VerticalAlignment="Top"/>
                     </Border>
                 </StackPanel>
             </Grid>
-            <Grid Grid.Row="0" Grid.RowSpan="4" Grid.Column="1">
+            <Grid Grid.Row="0" Grid.RowSpan="5" Grid.ColumnSpan="2" Grid.Column="0" Margin="462,0,-0.4,55.4">
                 <ListBox Name="ListBoxAgents" 
                          ItemsSource="{Binding Path=Agents}"
                          SelectedItem="{Binding Path=CurrentAgent}"
@@ -107,6 +130,24 @@
                          IsSynchronizedWithCurrentItem="True"
                          DisplayMemberPath="CodeName" 
                          Margin="9"/>
+            </Grid>
+            <Grid Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="146*"/>
+                    <ColumnDefinition Width="305*"/>
+                    <ColumnDefinition Width="342*"/>
+                </Grid.ColumnDefinitions>
+                <StatusBar VerticalAlignment="Bottom" Background="AliceBlue" Margin="0,-4,-0.4,28.4" Grid.ColumnSpan="3">
+                    <StatusBarItem Content="Agents Count:" />
+                    <StatusBarItem Name="sbiAgentsCount" Width="40"
+                           Content="{Binding Path=Agents.Count}" />
+                    <StatusBarItem Name="sbiDateTime" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal" Name="spClock">
+                            <TextBlock Margin="4,0" Name="tblkDate" Text="{Binding Path=Clock.Date}" />
+                            <TextBlock Margin="4,0" Name="tblkTime" Text="{Binding Path=Clock.Time}" />
+                        </StackPanel>
+                    </StatusBarItem>
+                </StatusBar>
             </Grid>
 
         </Grid>
