@@ -11,6 +11,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentAssignment3", "AgentAs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentAssignment4", "AgentAssignment4\AgentAssignment4.csproj", "{A6BD140D-0906-42A9-8BC2-C40987746701}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentAssignment5", "AgentAssignment5\AgentAssignment5.csproj", "{898FED93-1040-4BF6-9EC9-2739E4E410D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{0AFB45CC-0C04-4B99-B4EE-DA1DF5426FFA}"
+	ProjectSection(SolutionItems) = preProject
+		AgentAssignment4\Images\leftArrow.png = AgentAssignment4\Images\leftArrow.png
+		AgentAssignment4\Images\minusSign.png = AgentAssignment4\Images\minusSign.png
+		AgentAssignment4\Images\plusSign.png = AgentAssignment4\Images\plusSign.png
+		AgentAssignment4\Images\rightArrow.png = AgentAssignment4\Images\rightArrow.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +43,10 @@ Global
 		{A6BD140D-0906-42A9-8BC2-C40987746701}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6BD140D-0906-42A9-8BC2-C40987746701}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6BD140D-0906-42A9-8BC2-C40987746701}.Release|Any CPU.Build.0 = Release|Any CPU
+		{898FED93-1040-4BF6-9EC9-2739E4E410D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{898FED93-1040-4BF6-9EC9-2739E4E410D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{898FED93-1040-4BF6-9EC9-2739E4E410D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{898FED93-1040-4BF6-9EC9-2739E4E410D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
